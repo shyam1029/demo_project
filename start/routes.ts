@@ -18,27 +18,16 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
+import Route from "@ioc:Adonis/Core/Route";
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+Route.get("/", async () => {
+  return { hello: "world" };
+});
 
 Route.group(() => {
-
-  Route.post("register", "AuthController.register");
-  Route.post("login", "AuthController.login");
-  
-      Route.group( () => {
-      Route.get("profiles/:id", "ProfilesController.show");
-      Route.put("profiles/update", "ProfilesController.update");
-      Route.post("profiles", "ProfilesController.store");
-      }).middleware("auth:api");
-
-      Route.group(() => {
-        Route.post("profiles/delete", "ProfilesController.destroy"),
-        Route.get("profiles", "ProfilesController.show")
-      }).middleware(["auth", "admin"])
-      
-      
+  // public routes
+  Route.post("/register", "AuthController.register");
+  Route.post("/login", "AuthController.login");
+  // protected routes
+  Route.post("/logout", "AuthController.logout").middleware("auth");
 }).prefix("api");
