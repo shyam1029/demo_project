@@ -3,28 +3,32 @@ import { column, BaseModel, belongsTo } from "@ioc:Adonis/Lucid/Orm";
 import { BelongsTo } from "@ioc:Adonis/Lucid/Orm";
 import User from "App/Models/User";
 export default class Profile extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, columnName: "id" })
   public id!: number;
 
-  @column()
+  @column({ columnName: "user_id" })
   public userId!: number;
 
-  @column()
+  @column({ columnName: "name" })
   public name!: string;
 
-  @column()
+  @column({ columnName: "mobile" })
   public mobile!: string;
 
-  @column()
+  @column({ columnName: "gender" })
   public gender!: "MALE" | "FEMALE";
 
-  @column()
+  @column({ columnName: "date_of_birth" })
   public dateOfBirth!: string;
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, columnName: "created_at" })
   public createdAt!: DateTime;
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({
+    autoCreate: true,
+    autoUpdate: true,
+    columnName: "updated_at",
+  })
   public updatedAt!: DateTime;
 
   @belongsTo(() => User)

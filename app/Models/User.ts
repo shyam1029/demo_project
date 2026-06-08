@@ -4,22 +4,26 @@ import { column, beforeSave, BaseModel, hasOne } from "@ioc:Adonis/Lucid/Orm";
 import { HasOne } from "@ioc:Adonis/Lucid/Orm";
 import Profile from "App/Models/Profile";
 export default class User extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, columnName: "id" })
   public id!: number;
 
-  @column()
+  @column({ columnName: "email" })
   public email!: string;
 
-  @column({ serializeAs: null })
+  @column({ serializeAs: null, columnName: "password" })
   public password!: string;
 
-  @column()
+  @column({ columnName: "remember_me_token" })
   public rememberMeToken!: string | null;
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, columnName: "created_at" })
   public createdAt!: DateTime;
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({
+    autoCreate: true,
+    autoUpdate: true,
+    columnName: "updated_at",
+  })
   public updatedAt!: DateTime;
 
   @beforeSave()

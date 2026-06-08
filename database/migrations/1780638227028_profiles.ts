@@ -1,6 +1,9 @@
 import BaseSchema from "@ioc:Adonis/Lucid/Schema";
+import Profile from "App/Models/Profile";
+
 export default class Profiles extends BaseSchema {
-  protected tableName = "profiles";
+  protected tableName = Profile.table;
+
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments("id");
@@ -16,10 +19,11 @@ export default class Profiles extends BaseSchema {
       table.string("mobile", 10).notNullable();
       table.enum("gender", ["MALE", "FEMALE"]).notNullable();
       table.date("date_of_birth").notNullable();
-      table.timestamp("created_at", { useTz: true }).notNullable();
-      table.timestamp("updated_at", { useTz: true }).notNullable();
+      table.datetime("created_at", { useTz: true }).notNullable().index();
+      table.datetime("updated_at", { useTz: true }).notNullable().index();
     });
   }
+
   public async down() {
     this.schema.dropTable(this.tableName);
   }
