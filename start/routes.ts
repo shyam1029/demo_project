@@ -26,8 +26,10 @@ Route.get("/", async () => {
 
 Route.group(() => {
   // public routes
-  Route.post("/register", "AuthController.register");
-  Route.post("/login", "AuthController.login");
+  Route.post("/register", "AuthController.register").middleware(
+    "rateLimitRegister",
+  );
+  Route.post("/login", "AuthController.login").middleware("rateLimitLogin");
   // protected routes
   Route.post("/logout", "AuthController.logout").middleware("auth");
 }).prefix("api");
