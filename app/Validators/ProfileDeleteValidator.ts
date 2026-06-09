@@ -1,6 +1,7 @@
 import { schema, rules, CustomMessages } from "@ioc:Adonis/Core/Validator";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-export default class DeleteProfileValidator {
+
+export default class ProfileDeleteValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({

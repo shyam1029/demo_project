@@ -1,8 +1,8 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Profile from "App/Models/Profile";
-import CreateProfileValidator from "App/Validators/CreateProfileValidator";
-import UpdateProfileValidator from "App/Validators/UpdateProfileValidator";
-import DeleteProfileValidator from "App/Validators/DeleteProfileValidator";
+import ProfileCreateValidator from "App/Validators/ProfileCreateValidator";
+import ProfileUpdateValidator from "App/Validators/ProfileUpdateValidator";
+import ProfileDeleteValidator from "App/Validators/ProfileDeleteValidator";
 
 export default class ProfilesController {
   public async show({ auth, response }: HttpContextContract) {
@@ -24,7 +24,7 @@ export default class ProfilesController {
         message: "Profile already exists. Use PUT /user/profile to update it.",
       });
     }
-    const payload = await request.validate(CreateProfileValidator);
+    const payload = await request.validate(ProfileCreateValidator);
     const profile = await Profile.create({
       userId: user.id,
       name: payload.name,
@@ -41,7 +41,7 @@ export default class ProfilesController {
   public async update({ auth, request, response }: HttpContextContract) {
     const user = auth.user!;
     const profile = await Profile.findByOrFail("user_id", user.id);
-    const payload = await request.validate(UpdateProfileValidator);
+    const payload = await request.validate(ProfileUpdateValidator);
     profile.merge({
       name: payload.name,
       mobile: payload.mobile,
@@ -57,7 +57,7 @@ export default class ProfilesController {
 
   public async destroy({ auth, request, response }: HttpContextContract) {
     const user = auth.user!;
-    const payload = await request.validate(DeleteProfileValidator);
+    const payload = await request.validate(ProfileDeleteValidator);
     const profile = await Profile.findByOrFail("user_id", user.id);
     if (profile.mobile !== payload.mobile) {
       return response.badRequest({
