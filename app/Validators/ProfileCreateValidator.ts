@@ -1,13 +1,11 @@
 import { schema, rules, CustomMessages } from "@ioc:Adonis/Core/Validator";
-import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import { Gender } from "App/Enums/Gender";
 
 export default class ProfileCreateValidator {
-  constructor(protected ctx: HttpContextContract) {}
-
   public schema = schema.create({
     name: schema.string({ trim: true }, [rules.minLength(3)]),
-    mobile: schema.string({ trim: true }, [rules.regex(/^[0-9]{10}$/)]),
-    gender: schema.enum(["MALE", "FEMALE"] as const),
+    mobile: schema.string({ trim: true }, [rules.mobileNumber()]),
+    gender: schema.enum(Object.values(Gender)),
     date_of_birth: schema.date({ format: "yyyy-MM-dd" }),
   });
 
@@ -16,7 +14,7 @@ export default class ProfileCreateValidator {
     "name.minLength": "Name must be at least 3 characters",
     "name.maxLength": "Name cannot exceed 30 characters",
     "mobile.required": "Mobile number is required",
-    "mobile.regex": "Mobile number must be exactly 10 digits",
+    "mobile.mobileNumber": "Mobile number must be exactly 10 digits",
     "gender.required": "Gender is required",
     "gender.enum": "Gender must be either MALE or FEMALE",
     "date_of_birth.required": "Date of birth is required",
