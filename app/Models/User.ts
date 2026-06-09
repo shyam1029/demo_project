@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, hasMany, HasMany, hasOne, HasOne, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, hasMany, HasMany, hasOne, HasOne, manyToMany, ManyToMany, beforeFind, beforeFetch } from '@ioc:Adonis/Lucid/Orm'
+import { ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 import Profile from './Profile'
 import Role from './Role'
 
@@ -39,10 +40,24 @@ export default class User extends BaseModel {
   public updatedAt: DateTime
   hasOne: any
 
+  @column.dateTime({ columnName: 'deleted_at' })
+  public deletedAt: DateTime | null
+
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
+  }
+
+  @beforeFind()
+  @beforeFetch()
+  public static ignoreDeleted(query: ModelQueryBuilderContract<typeof User>) {
+    query.whereNull('deleted_at')
+  }
+
+  public async delete() {
+    this.deletedAt = DateTime.local()
+    await this.save()
   }
 }
