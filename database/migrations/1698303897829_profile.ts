@@ -1,6 +1,8 @@
 import BaseSchema from "@ioc:Adonis/Lucid/Schema";
+import Profile from "App/Models/Profile";
+
 export default class Profiles extends BaseSchema {
-  protected tableName = "profiles";
+  protected tableName = Profile.table;
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments("id");
